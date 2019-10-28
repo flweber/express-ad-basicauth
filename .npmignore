@@ -1,0 +1,10 @@
+.eslintrc.json
+Jenkinsfile
+manual.test.js
+*lock*
+webpack.config.js
+.gitignore
+test/
+src/
+node_modules/
+.vscode/
