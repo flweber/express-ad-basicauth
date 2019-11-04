@@ -52,7 +52,7 @@ const adAuth = (user, pass, cb) => {
       }
       if (auth) {
         if (!group) {
-          return cb(!auth ? new Error("Not allowed!") : null, { user });
+          return cb(null, { user });
         }
         ad.isUserMemberOf(user, group, (err, isMember) => {
           if (err) return cb(err, null);
@@ -75,6 +75,11 @@ app.use(
     adAuth(user, pass, fn);
   })
 );
+
+app.get("/test", (req, res) => {
+  if (!res.headersSent) return res.status(200).json({ auth: true });
+  return;
+});
 
 module.exports.initAd = init;
 module.exports.app = app;

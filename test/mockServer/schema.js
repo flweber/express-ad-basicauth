@@ -1,4 +1,7 @@
-'use strict'
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-prototype-builtins */
+/* eslint-disable no-underscore-dangle */
+"use strict";
 
 // This file defines the LDAP schema we use during testing. It should be
 // fairly self explanitory. It constructs a plain old JS object that looks
@@ -7,39 +10,59 @@
 // There are some utility methods defined on this object to make searching
 // the schema easier. They are defined at the end of this file.
 
-const RDN = require('ldapjs/lib/dn').RDN
-const utilities = require('./utilities')
+const RDN = require("ldapjs/lib/dn").RDN;
+const utilities = require("./utilities");
 
-const groupCategory = 'CN=Group,CN=Schema,CN=Configuration,DC=domain,DC=com'
-const personCategory = 'CN=Person,CN=Schema,CN=Configuration,DC=domain,DC=com'
-const otherCategory = 'CN=Other,CN=Schema,CN=Configuration,DC=domain,DC=com'
-const schema = {}
+const groupCategory = "CN=Group,CN=Schema,CN=Configuration,DC=domain,DC=com";
+const personCategory = "CN=Person,CN=Schema,CN=Configuration,DC=domain,DC=com";
+const otherCategory = "CN=Other,CN=Schema,CN=Configuration,DC=domain,DC=com";
+const schema = {};
 
 schema.com = {
-  type: 'dc'
-}
+  type: "dc"
+};
 schema.com.domain = {
-  type: 'dc'
-}
+  type: "dc"
+};
 
 // Groups
-schema.com.domain['domain groups'] = {
-  type: 'ou'
+schema.com.domain["domain groups"] = {
+  type: "ou"
 };
 [
-  'Account - Department #1', 'Account - Department #2',
-  'Account - Department #3', 'Account - Department #4',
-  'All Directors', 'Another Group', 'Authors', 'Budget Users', 'Domain Admins',
-  'My Group', 'My Group #1', 'My Group #2', 'My Nested Users', 'My Users',
-  'Parking Department', 'Parking Users', 'Security Users', 'Security Owners',
-  'System Directors',
-  'VPN Users',
-  'Web Administrator', 'Yet Another Group',
-  'Budget Director', 'Accounts Receivable Director',
-  'Editors', 'Contributors', 'Web Editors', 'Web Users', 'grpa', 'grpb'
-].forEach((n) => {
-  schema.com.domain['domain groups'][n.toLowerCase()] = {
-    type: 'cn',
+  "Account - Department #1",
+  "Account - Department #2",
+  "Account - Department #3",
+  "Account - Department #4",
+  "All Directors",
+  "Another Group",
+  "Authors",
+  "Budget Users",
+  "Domain Admins",
+  "My Group",
+  "My Group #1",
+  "My Group #2",
+  "My Nested Users",
+  "My Users",
+  "Parking Department",
+  "Parking Users",
+  "Security Users",
+  "Security Owners",
+  "System Directors",
+  "VPN Users",
+  "Web Administrator",
+  "Yet Another Group",
+  "Budget Director",
+  "Accounts Receivable Director",
+  "Editors",
+  "Contributors",
+  "Web Editors",
+  "Web Users",
+  "grpa",
+  "grpb"
+].forEach(n => {
+  schema.com.domain["domain groups"][n.toLowerCase()] = {
+    type: "cn",
     value: {
       dn: `CN=${n},OU=Domain Groups,DC=domain,DC=com`,
       attributes: {
@@ -50,109 +73,111 @@ schema.com.domain['domain groups'] = {
         createTimeStamp: 0,
         createdTimestamp: 0,
         memberOf: [],
-        objectClass: ['group'],
+        objectClass: ["group"],
         objectCategory: groupCategory
       }
     }
-  }
-})
+  };
+});
 
-schema.com.domain['distribution lists'] = {
-  type: 'ou',
+schema.com.domain["distribution lists"] = {
+  type: "ou",
 
-  'all users': {
-    type: 'cn',
+  "all users": {
+    type: "cn",
     value: {
-      dn: 'CN=All Users,OU=Distribution Lists,DC=domain,DC=com',
+      dn: "CN=All Users,OU=Distribution Lists,DC=domain,DC=com",
       attributes: {
-        cn: 'All Users',
-        distinguishedName: 'CN=All Users,OU=Distribution Lists,DC=domain,DC=com',
-        description: 'All Users distribution list',
+        cn: "All Users",
+        distinguishedName:
+          "CN=All Users,OU=Distribution Lists,DC=domain,DC=com",
+        description: "All Users distribution list",
         groupType: 1,
-        objectClass: ['group'],
+        objectClass: ["group"],
         objectCategory: groupCategory
       }
     }
   }
-}
+};
 
 // sub-groups
-schema.com.domain['domain groups']['my nested users']
-  .value.attributes.memberOf.push(
-    schema.com.domain['domain groups']['my users'].value
-  )
-schema.com.domain['domain groups']['vpn users']
-  .value.attributes.memberOf.push(
-    schema.com.domain['domain groups']['my users'].value
-  )
-schema.com.domain['domain groups']['web users']
-  .value.attributes.memberOf.push(
-    schema.com.domain['domain groups']['my users'].value
-  )
+schema.com.domain["domain groups"][
+  "my nested users"
+].value.attributes.memberOf.push(
+  schema.com.domain["domain groups"]["my users"].value
+);
+schema.com.domain["domain groups"]["vpn users"].value.attributes.memberOf.push(
+  schema.com.domain["domain groups"]["my users"].value
+);
+schema.com.domain["domain groups"]["web users"].value.attributes.memberOf.push(
+  schema.com.domain["domain groups"]["my users"].value
+);
 
-schema.com.domain['domain groups']['another group']
-  .value.attributes.memberOf.push(
-    schema.com.domain['domain groups']['my group'].value
-  )
-schema.com.domain['domain groups']['yet another group']
-  .value.attributes.memberOf.push(
-    schema.com.domain['domain groups']['my group'].value
-  )
-schema.com.domain['domain groups']['authors']
-  .value.attributes.memberOf.push(
-    schema.com.domain['domain groups']['my group'].value
-  )
+schema.com.domain["domain groups"][
+  "another group"
+].value.attributes.memberOf.push(
+  schema.com.domain["domain groups"]["my group"].value
+);
+schema.com.domain["domain groups"][
+  "yet another group"
+].value.attributes.memberOf.push(
+  schema.com.domain["domain groups"]["my group"].value
+);
+schema.com.domain["domain groups"]["authors"].value.attributes.memberOf.push(
+  schema.com.domain["domain groups"]["my group"].value
+);
 
-schema.com.domain['domain groups']['editors']
-  .value.attributes.memberOf.push(
-    schema.com.domain['domain groups']['authors'].value
-  )
-schema.com.domain['domain groups']['contributors']
-  .value.attributes.memberOf.push(
-    schema.com.domain['domain groups']['authors'].value
-  )
-schema.com.domain['domain groups']['web editors']
-  .value.attributes.memberOf.push(
-    schema.com.domain['domain groups']['authors'].value
-  )
-schema.com.domain['domain groups']['web users']
-  .value.attributes.memberOf.push(
-    schema.com.domain['domain groups']['authors'].value
-  )
-schema.com.domain['domain groups']['grpa']
-  .value.attributes.memberOf.push(
-    schema.com.domain['domain groups']['grpb'].value
-  )
-schema.com.domain['domain groups']['grpb']
-  .value.attributes.memberOf.push(
-    schema.com.domain['domain groups']['grpa'].value
-  )
+schema.com.domain["domain groups"]["editors"].value.attributes.memberOf.push(
+  schema.com.domain["domain groups"]["authors"].value
+);
+schema.com.domain["domain groups"][
+  "contributors"
+].value.attributes.memberOf.push(
+  schema.com.domain["domain groups"]["authors"].value
+);
+schema.com.domain["domain groups"][
+  "web editors"
+].value.attributes.memberOf.push(
+  schema.com.domain["domain groups"]["authors"].value
+);
+schema.com.domain["domain groups"]["web users"].value.attributes.memberOf.push(
+  schema.com.domain["domain groups"]["authors"].value
+);
+schema.com.domain["domain groups"]["grpa"].value.attributes.memberOf.push(
+  schema.com.domain["domain groups"]["grpb"].value
+);
+schema.com.domain["domain groups"]["grpb"].value.attributes.memberOf.push(
+  schema.com.domain["domain groups"]["grpa"].value
+);
 
 // Other
-schema.com.domain['other'] = {
-  type: 'ou'
+schema.com.domain["other"] = {
+  type: "ou"
 };
 [
-  'parking-computer-01', 'parking-computer-02',
-  'security-test-01', 'security-test-02', 'security-audit-01'
-].forEach((item) => {
-  schema.com.domain['other'][item.toLowerCase()] = {
-    type: 'cn',
+  "parking-computer-01",
+  "parking-computer-02",
+  "security-test-01",
+  "security-test-02",
+  "security-audit-01"
+].forEach(item => {
+  schema.com.domain["other"][item.toLowerCase()] = {
+    type: "cn",
     value: {
       dn: `CN=${item},OU=Other,DC=domain,DC=com`,
       attributes: {
         cn: item,
         distinguishedName: `CN=${item},OU=Other,DC=domain,DC=com`,
         description: `Other item ${item}`,
-        objectClass: ['other'],
+        objectClass: ["other"],
         objectCategory: otherCategory
       }
     }
-  }
-})
+  };
+});
 
 // Users
-function createUserObject (firstName, lastName, initials, username, ou, groups) {
+function createUserObject(firstName, lastName, initials, username, ou, groups) {
   const user = {
     dn: `CN=${firstName} ${lastName},OU=${ou},DC=domain,DC=com`,
     attributes: {
@@ -173,326 +198,325 @@ function createUserObject (firstName, lastName, initials, username, ou, groups) 
       cn: `CN=${firstName} ${lastName},OU=Domain Users,DC=domain,DC=com`,
       distinguishedName: `CN=${firstName} ${lastName},OU=Domain Users,DC=domain,DC=com`,
       displayName: `${firstName} ${lastName}`,
-      comment: 'none',
-      description: 'none',
+      comment: "none",
+      description: "none",
       objectCategory: personCategory,
-      extraAttributeForTesting: '',
+      extraAttributeForTesting: "",
       memberOf: []
     }
-  }
+  };
 
-  groups.forEach((g) => {
-    const gLower = g.toLowerCase()
-    if (Object.keys(schema.com.domain['domain groups']).indexOf(gLower) !== -1) {
+  groups.forEach(g => {
+    const gLower = g.toLowerCase();
+    if (
+      Object.keys(schema.com.domain["domain groups"]).indexOf(gLower) !== -1
+    ) {
       user.attributes.memberOf.push(
-        schema.com.domain['domain groups'][gLower].value
-      )
+        schema.com.domain["domain groups"][gLower].value
+      );
     }
-    if (Object.keys(schema.com.domain['distribution lists']).indexOf(gLower) !== -1) {
+    if (
+      Object.keys(schema.com.domain["distribution lists"]).indexOf(gLower) !==
+      -1
+    ) {
       user.attributes.memberOf.push(
-        schema.com.domain['distribution lists'][gLower].value
-      )
+        schema.com.domain["distribution lists"][gLower].value
+      );
     }
-  })
+  });
 
-  return user
+  return user;
 }
 
-schema.com.domain['domain users'] = {
-  type: 'ou',
-  'first last name': {
-    type: 'cn',
+schema.com.domain["domain users"] = {
+  type: "ou",
+  "first last name": {
+    type: "cn",
     value: createUserObject(
-      'First',
-      'Last Name',
-      'FLN',
-      'username',
-      'Domain Users',
-      ['my users', 'vpn users', 'authors']
+      "First",
+      "Last Name",
+      "FLN",
+      "username",
+      "Domain Users",
+      ["my users", "vpn users", "authors"]
     )
   },
 
-  'first last name #1': {
-    type: 'cn',
+  "first last name #1": {
+    type: "cn",
     value: createUserObject(
-      'First',
-      'Last Name #1',
-      'FLN1',
-      'username1',
-      'Domain Users',
-      ['all users', 'budget users']
+      "First",
+      "Last Name #1",
+      "FLN1",
+      "username1",
+      "Domain Users",
+      ["all users", "budget users"]
     )
   },
 
-  'first last name #2': {
-    type: 'cn',
+  "first last name #2": {
+    type: "cn",
     value: createUserObject(
-      'First',
-      'Last Name #2',
-      'FLN1',
-      'username2',
-      'Domain Users',
-      ['all users']
+      "First",
+      "Last Name #2",
+      "FLN1",
+      "username2",
+      "Domain Users",
+      ["all users"]
     )
   },
 
-  'first last name #3': {
-    type: 'cn',
+  "first last name #3": {
+    type: "cn",
     value: createUserObject(
-      'First',
-      'Last Name #3',
-      'FLN1',
-      'username3',
-      'Domain Users',
-      ['all users']
+      "First",
+      "Last Name #3",
+      "FLN1",
+      "username3",
+      "Domain Users",
+      ["all users"]
     )
   },
 
-  'parking attendant #1': {
-    type: 'cn',
+  "parking attendant #1": {
+    type: "cn",
     value: createUserObject(
-      'Parking',
-      'Attendant #1',
-      'PA1',
-      'pattendant1',
-      'Domain Users',
+      "Parking",
+      "Attendant #1",
+      "PA1",
+      "pattendant1",
+      "Domain Users",
       []
     )
   },
 
-  'parking attendant #2': {
-    type: 'cn',
+  "parking attendant #2": {
+    type: "cn",
     value: createUserObject(
-      'Parking',
-      'Attendant #2',
-      'PA2',
-      'pattendant2',
-      'Domain Users',
+      "Parking",
+      "Attendant #2",
+      "PA2",
+      "pattendant2",
+      "Domain Users",
       []
     )
   },
 
-  'another user': {
-    type: 'cn',
+  "another user": {
+    type: "cn",
     value: createUserObject(
-      'Another',
-      'User',
-      'AU',
-      'anotheruser',
-      'Domain Users',
+      "Another",
+      "User",
+      "AU",
+      "anotheruser",
+      "Domain Users",
       []
     )
   },
 
-  'john smith': {
-    type: 'cn',
+  "john smith": {
+    type: "cn",
+    value: createUserObject("John", "Smith", "JS", "jsmith", "Domain Users", [])
+  },
+
+  "bob smith": {
+    type: "cn",
+    value: createUserObject("Bob", "Smith", "BS", "bsmith", "Domain Users", [])
+  },
+
+  "budget director": {
+    type: "cn",
     value: createUserObject(
-      'John',
-      'Smith',
-      'JS',
-      'jsmith',
-      'Domain Users',
-      []
+      "Budget",
+      "Director",
+      "BD",
+      "bdirector",
+      "Domain Users",
+      ["budget director"]
     )
   },
 
-  'bob smith': {
-    type: 'cn',
+  "accounts receivable director": {
+    type: "cn",
     value: createUserObject(
-      'Bob',
-      'Smith',
-      'BS',
-      'bsmith',
-      'Domain Users',
-      []
+      "Accounts",
+      "Receivable Director",
+      "ARD",
+      "ardirector",
+      "Domain Users",
+      ["accounts receivable director"]
     )
   },
 
-  'budget director': {
-    type: 'cn',
+  "celebrity circular": {
+    type: "cn",
     value: createUserObject(
-      'Budget',
-      'Director',
-      'BD',
-      'bdirector',
-      'Domain Users',
-      ['budget director']
-    )
-  },
-
-  'accounts receivable director': {
-    type: 'cn',
-    value: createUserObject(
-      'Accounts',
-      'Receivable Director',
-      'ARD',
-      'ardirector',
-      'Domain Users',
-      ['accounts receivable director']
-    )
-  },
-
-  'celebrity circular': {
-    type: 'cn',
-    value: createUserObject(
-      'Celebrity',
-      'Circular',
-      'CC',
-      'celeb',
-      'Domain Users',
-      ['grpa']
+      "Celebrity",
+      "Circular",
+      "CC",
+      "celeb",
+      "Domain Users",
+      ["grpa"]
     )
   }
-}
+};
 
-schema.com.domain['domain admins'] = {
-  type: 'ou',
+schema.com.domain["domain admins"] = {
+  type: "ou",
 
-  'web administrator': {
-    type: 'cn',
+  "web administrator": {
+    type: "cn",
     value: createUserObject(
-      'Web',
-      'Administrator',
-      'WA',
-      'webadmin',
-      'Domain Admins',
-      ['my users', 'web administrator', 'domain admins']
+      "Web",
+      "Administrator",
+      "WA",
+      "webadmin",
+      "Domain Admins",
+      ["my users", "web administrator", "domain admins"]
     )
   }
-}
+};
 
 // methods
-schema.getByRDN = function getByRDN (rdn) {
-  let _rdn
+schema.getByRDN = function getByRDN(rdn) {
+  let _rdn;
   if (rdn instanceof RDN) {
-    _rdn = rdn.toString().toLowerCase()
-  } else if (!(typeof rdn === 'string')) {
-    throw new Error('rdn must be a string or instance of RDN')
+    _rdn = rdn.toString().toLowerCase();
+  } else if (!(typeof rdn === "string")) {
+    throw new Error("rdn must be a string or instance of RDN");
   } else {
-    _rdn = rdn.toLowerCase()
+    _rdn = rdn.toLowerCase();
   }
 
-  const components = _rdn.split(',')
-  const path = []
-  for (let i = (components.length - 1); i >= 0; i = i - 1) {
-    path.push(components[i].split('=')[1].replace(/[()]/g, ''))
+  const components = _rdn.split(",");
+  const path = [];
+  for (let i = components.length - 1; i >= 0; i = i - 1) {
+    path.push(components[i].split("=")[1].replace(/[()]/g, ""));
   }
 
-  let result = schema
-  for (let p of path) {
-    result = result[p]
+  let result = schema;
+  for (const p of path) {
+    result = result[p];
   }
 
-  return result.value
-}
+  return result.value;
+};
 
 // find based on simply equality filter
 // e.g. `(givenName=First)`
-schema.filter = function filter (query) {
-  if (query.indexOf('*') !== -1) {
-    return schema.find(query.replace(/[()]/g, ''))
+schema.filter = function filter(query) {
+  if (query.indexOf("*") !== -1) {
+    return schema.find(query.replace(/[()]/g, ""));
   }
-  const parts = query.replace(/[()]/g, '').replace('=', '~~').split('~~')
+  const parts = query
+    .replace(/[()]/g, "")
+    .replace("=", "~~")
+    .split("~~");
 
-  const results = []
-  function loop (object, property, value) {
-    for (let k of Object.keys(object)) {
-      if (!object[k].hasOwnProperty('type')) {
-        continue
+  const results = [];
+  function loop(object, property, value) {
+    for (const k of Object.keys(object)) {
+      if (!object[k].hasOwnProperty("type")) {
+        continue;
       }
-      const item = object[k].value
-      Object.keys(item.attributes).forEach((k) => {
+      const item = object[k].value;
+      Object.keys(item.attributes).forEach(k => {
         if (k.toLowerCase() === property && item.attributes[k] === value) {
-          results.push(item)
+          results.push(item);
         }
-      })
+      });
     }
   }
 
-  loop(schema.com.domain['domain users'], parts[0], parts[1])
-  loop(schema.com.domain['domain admins'], parts[0], parts[1])
-  loop(schema.com.domain['domain groups'], parts[0], parts[1])
-  loop(schema.com.domain['distribution lists'], parts[0], parts[1])
-  loop(schema.com.domain['other'], parts[0], parts[1])
+  loop(schema.com.domain["domain users"], parts[0], parts[1]);
+  loop(schema.com.domain["domain admins"], parts[0], parts[1]);
+  loop(schema.com.domain["domain groups"], parts[0], parts[1]);
+  loop(schema.com.domain["distribution lists"], parts[0], parts[1]);
+  loop(schema.com.domain["other"], parts[0], parts[1]);
 
-  return results
-}
+  return results;
+};
 
 // wildcard search based on CN
-schema.find = function find (query) {
-  const _query = query.toLowerCase().replace(/\*/g, '').replace(/cn=/, '')
-  const groups = schema.com.domain['domain groups']
-  const lists = schema.com.domain['distribution lists']
-  const users = schema.com.domain['domain users']
-  const admins = schema.com.domain['domain admins']
-  const other = schema.com.domain['other']
+schema.find = function find(query) {
+  const _query = query
+    .toLowerCase()
+    .replace(/\*/g, "")
+    .replace(/cn=/, "");
+  const groups = schema.com.domain["domain groups"];
+  const lists = schema.com.domain["distribution lists"];
+  const users = schema.com.domain["domain users"];
+  const admins = schema.com.domain["domain admins"];
+  const other = schema.com.domain["other"];
 
-  const results = []
-  function loop (object, type) {
-    for (let k of Object.keys(object)) {
-      if (!object[k].hasOwnProperty('type')) {
-        continue
+  const results = [];
+  function loop(object, type) {
+    for (const k of Object.keys(object)) {
+      if (!object[k].hasOwnProperty("type")) {
+        continue;
       }
       if (k.indexOf(_query) !== -1) {
-        results.push(object[k].value)
+        results.push(object[k].value);
       }
     }
   }
 
-  loop(groups)
-  loop(lists)
-  loop(users)
-  loop(admins)
-  loop(other)
+  loop(groups);
+  loop(lists);
+  loop(users);
+  loop(admins);
+  loop(other);
 
-  return results
-}
+  return results;
+};
 
-schema.getGroup = function getGroup (cn) {
-  const cnLower = cn.toLowerCase()
-  let group
-  if (cnLower.indexOf('*') !== -1) {
-    group = schema.find(cnLower)
+schema.getGroup = function getGroup(cn) {
+  const cnLower = cn.toLowerCase();
+  let group;
+  if (cnLower.indexOf("*") !== -1) {
+    group = schema.find(cnLower);
   } else {
-    if (Object.keys(schema.com.domain['domain groups']).indexOf(cnLower) !== -1) {
-      group = schema.com.domain['domain groups'][cnLower]
+    if (
+      Object.keys(schema.com.domain["domain groups"]).indexOf(cnLower) !== -1
+    ) {
+      group = schema.com.domain["domain groups"][cnLower];
     } else {
-      group = schema.com.domain['distribution lists'][cnLower]
+      group = schema.com.domain["distribution lists"][cnLower];
     }
 
     group.value.attributes.member = schema.getGroupMembers(
       group.value.attributes.cn
-    )
-    group = group.value
+    );
+    group = group.value;
   }
-  return group
-}
+  return group;
+};
 
-schema.getGroupMembers = function getGroupMembers (groupCN) {
-  const domainUsers = schema.com.domain['domain users']
-  const adminUsers = schema.com.domain['domain admins']
-  const members = []
+schema.getGroupMembers = function getGroupMembers(groupCN) {
+  const domainUsers = schema.com.domain["domain users"];
+  const adminUsers = schema.com.domain["domain admins"];
+  const members = [];
 
-  function loopUsers (users) {
-    for (let k of Object.keys(users)) {
-      if (!users[k].hasOwnProperty('type')) {
-        continue
+  function loopUsers(users) {
+    for (const k of Object.keys(users)) {
+      if (!users[k].hasOwnProperty("type")) {
+        continue;
       }
       if (!users[k].value.attributes.memberOf) {
-        continue
+        continue;
       }
-      for (let g of users[k].value.attributes.memberOf) {
+      for (const g of users[k].value.attributes.memberOf) {
         if (g.attributes.cn.toLowerCase() === groupCN.toLowerCase()) {
-          members.push(users[k].value.attributes.cn)
+          members.push(users[k].value.attributes.cn);
         }
       }
     }
   }
 
-  loopUsers(domainUsers)
-  loopUsers(adminUsers)
+  loopUsers(domainUsers);
+  loopUsers(adminUsers);
 
-  return members
-}
+  return members;
+};
 
-module.exports = schema
+module.exports = schema;
