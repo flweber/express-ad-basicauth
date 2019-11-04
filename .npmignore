@@ -8,3 +8,4 @@ test/
 src/
 node_modules/
 .vscode/
+.npmrc

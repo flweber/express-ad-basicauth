@@ -1,7 +1,7 @@
 ﻿# express-ad-basicauth
 
 [![Build Status](https://ci.p.webish.one/buildStatus/icon?job=express-ad-basicauth%2Fmaster&style=flat-square)](https://ci.p.webish.one/blue/organizations/jenkins/express-ad-basicauth/activity)
-![npm (tag)](https://img.shields.io/npm/v/express-ad-basicauth/latest?style=flat-square) ![npm](https://img.shields.io/npm/v/express-ad-basicauth?style=flat-square) [![GitHub issues](https://img.shields.io/github/issues/flweber/express-ad-basicauth?style=flat-square)](https://github.com/flweber/express-ad-basicauth/issues) ![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/flweber/express-ad-basicauth?style=flat-square) ![npm](https://img.shields.io/npm/dt/express-ad-basicauth?style=flat-square) [![GitHub license](https://img.shields.io/github/license/flweber/express-ad-basicauth?style=flat-square)](https://github.com/flweber/express-ad-basicauth/blob/master/LICENSE) 
+![npm (tag)](https://img.shields.io/npm/v/express-ad-basicauth/latest?style=flat-square) ![npm](https://img.shields.io/npm/v/express-ad-basicauth?style=flat-square) [![GitHub issues](https://img.shields.io/github/issues/flweber/express-ad-basicauth?style=flat-square)](https://github.com/flweber/express-ad-basicauth/issues) ![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/flweber/express-ad-basicauth?style=flat-square) ![npm](https://img.shields.io/npm/dt/express-ad-basicauth?style=flat-square) [![GitHub license](https://img.shields.io/github/license/flweber/express-ad-basicauth?style=flat-square)](https://github.com/flweber/express-ad-basicauth/blob/master/LICENSE)
 
 Active directory basic auth middleware for express.
 
@@ -63,14 +63,14 @@ app.listen(port, () =>  console.log(`App is listening on port ${port}!`));
 
 ```javascript
 ...
-AdAuth.editName(user  => {
-  if (!user.includes("@")) user  =  `${user}@ad.local`;
-  return  user;
+AdAuth.editName(user => {
+  if (!user.includes("@")) user = `${user}@ad.local`;
+  return user;
 });
 
 AdAuth.editPass(password => {
   password = "Replace the password or do something else here";
-  return  password;
+  return password;
 });
 ...
 ```

@@ -32,5 +32,6 @@
   "scripts": {
     "build": "webpack --mode production",
     "test": "mocha --ui bdd test --exit"
-  }
+  },
+  "keywords": [ "basic", "auth", "authorization", "basicauth", "basic-auth", "ad", "activedirectory", "active", "directory", "ldap", "express-basic-auth", "express-basicauth" ]
 }

@@ -67,3 +67,5 @@ dist/
 
 # Local testfiles
 manual.test.js
+
+.npmrc

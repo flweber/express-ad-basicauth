@@ -4,9 +4,9 @@
 
 const expect = require("chai").expect;
 const request = require("request");
-const config = require("./test/config");
-const auth = require("./src/index");
-const Ad = require("./test/mockServer");
+const config = require("./config");
+const auth = require("../src/index");
+const Ad = require("./mockServer");
 
 const port = 3000;
 
