@@ -2,7 +2,7 @@
   "name": "express-ad-basicauth",
   "version": "1.0.0",
   "description": "Active directory basic auth middleware for express.",
-  "main": "src/index.js",
+  "main": "dist/index.min.js",
   "repository": "https://github.com/flweber/express-ad-basicauth.git",
   "author": "Florian Weber <info@webish.one>",
   "license": "MIT",
@@ -25,6 +25,7 @@
     "pino": "^4.7.2",
     "prettier": "^1.18.2",
     "request": "^2.88.0",
+    "terser-webpack-plugin": "^2.2.1",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.9"
   },

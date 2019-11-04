@@ -1,19 +1,30 @@
 const path = require("path");
+const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
   mode: "production",
-  entry: "./src/index.js",
+  entry: {
+    index: "./src/index.js",
+    "index.min": "./src/index.js"
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        include: /\.min\.js$/
+      })
+    ]
+  },
   output: {
     path: path.resolve("dist"),
-    filename: "index.js",
+    filename: "[name].js",
     libraryTarget: "commonjs2"
   },
+  target: "node",
   module: {
     rules: [
       {
-        test: /\.js?$/,
-        exclude: /(node_modules)/,
-        use: "babel-loader"
+        exclude: /node_modules/
       }
     ]
   },
