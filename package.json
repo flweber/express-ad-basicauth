@@ -1,6 +1,6 @@
 {
   "name": "express-ad-basicauth",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Active directory basic auth middleware for express.",
   "main": "dist/index.min.js",
   "repository": "https://github.com/flweber/express-ad-basicauth.git",
@@ -33,5 +33,18 @@
     "build": "webpack --mode production",
     "test": "mocha --ui bdd test --exit"
   },
-  "keywords": [ "basic", "auth", "authorization", "basicauth", "basic-auth", "ad", "activedirectory", "active", "directory", "ldap", "express-basic-auth", "express-basicauth" ]
+  "keywords": [
+    "basic",
+    "auth",
+    "authorization",
+    "basicauth",
+    "basic-auth",
+    "ad",
+    "activedirectory",
+    "active",
+    "directory",
+    "ldap",
+    "express-basic-auth",
+    "express-basicauth"
+  ]
 }
