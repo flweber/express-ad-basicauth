@@ -1,37 +1,106 @@
-## Welcome to GitHub Pages
+# express-ad-basicauth
 
-You can use the [editor on GitHub](https://github.com/flweber/express-ad-basicauth/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+[![Build Status](https://ci.p.webish.one/buildStatus/icon?job=express-ad-basicauth%2Fmaster&style=flat-square)](https://ci.p.webish.one/blue/organizations/jenkins/express-ad-basicauth/activity)
+![npm (tag)](https://img.shields.io/npm/v/express-ad-basicauth/latest?style=flat-square) ![npm](https://img.shields.io/npm/v/express-ad-basicauth?style=flat-square) [![GitHub issues](https://img.shields.io/github/issues/flweber/express-ad-basicauth?style=flat-square)](https://github.com/flweber/express-ad-basicauth/issues) ![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/flweber/express-ad-basicauth?style=flat-square) ![npm](https://img.shields.io/npm/dt/express-ad-basicauth?style=flat-square) [![GitHub license](https://img.shields.io/github/license/flweber/express-ad-basicauth?style=flat-square)](https://github.com/flweber/express-ad-basicauth/blob/master/LICENSE)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Active directory basic auth middleware for express.
 
-### Markdown
+## API
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+### Simple usage
 
-```markdown
-Syntax highlighted code block
+```javascript
+const  app  =  require("express")();
+const  AdAuth  =  require("./src");
+const port = 8080;
 
-# Header 1
-## Header 2
-### Header 3
+AdAuth.initAd(
+  {
+    url:  "ldap://ad.local:389",
+    baseDN:  "dc=ad,dc=local",
+    username:  "",
+    password:  ""
+  },
+  null
+);
 
-- Bulleted
-- List
+app.use(AdAuth.app);
 
-1. Numbered
-2. List
+app.get("/", (req, res) => {
+  res.send("Secret...!");
+});
 
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+app.listen(port, () =>  console.log(`App is listening on port ${port}!`));
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+### Check group membership
 
-### Jekyll Themes
+```javascript
+const  app  =  require("express")();
+const  AdAuth  =  require("./src");
+const port = 8080;
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/flweber/express-ad-basicauth/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+AdAuth.initAd(
+  {
+    url:  "ldap://ad.local:389",
+    baseDN:  "dc=ad,dc=local",
+    username:  "",
+    password:  ""
+  },
+  "domain-admins"
+);
 
-### Support or Contact
+app.use(AdAuth.app);
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+app.get("/", (req, res) => {
+  res.send("Only for domain admins!");
+});
+
+app.listen(port, () =>  console.log(`App is listening on port ${port}!`));
+```
+
+### Edit / prepare username and / or password
+
+```javascript
+...
+AdAuth.editName(user => {
+  if (!user.includes("@")) user = `${user}@ad.local`;
+  return user;
+});
+
+AdAuth.editPass(password => {
+  password = "Replace the password or do something else here";
+  return password;
+});
+...
+```
+
+## Active Directory configuration
+
+### Simple config
+
+```javascript
+{
+    url:  "ldap://ad.local:389",
+    baseDN:  "dc=ad,dc=local",
+    username:  "",
+    password:  ""
+}
+```
+
+### Simple Query
+
+```javascript
+{
+    url:  "ldap://ad.local:389",
+    baseDN:  "dc=ad,dc=local",
+    cn: "*Exchange*",
+    username:  "",
+    password:  ""
+}
+```
+
+### More Options
+
+For more options visit the `activedirectory2` package.
+You can find it [here](https://github.com/jsumners/node-activedirectory). All options are available.
