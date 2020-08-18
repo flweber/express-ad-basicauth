@@ -1,6 +1,6 @@
 {
   "name": "express-ad-basicauth",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Active directory basic auth middleware for express.",
   "main": "dist/index.min.js",
   "repository": "https://github.com/flweber/express-ad-basicauth.git",
@@ -22,8 +22,9 @@
     "jest": "^24.9.0",
     "ldapjs": "^2.1.1",
     "mocha": "^8.1.1",
-    "prettier": "^2.0.5",
     "pino": "^6.5.1",
+    "pino-pretty": "^4.1.0",
+    "prettier": "^2.0.5",
     "request": "^2.88.0",
     "terser-webpack-plugin": "^4.1.0",
     "webpack": "^4.41.2",
