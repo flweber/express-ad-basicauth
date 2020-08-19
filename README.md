@@ -11,7 +11,7 @@ Active directory basic auth middleware for express.
 
 ```javascript
 const  app  =  require("express")();
-const  AdAuth  =  require("./src");
+const  AdAuth  =  require("express-ad-basicauth");
 const port = 8080;
 
 AdAuth.initAd(
@@ -37,7 +37,7 @@ app.listen(port, () =>  console.log(`App is listening on port ${port}!`));
 
 ```javascript
 const  app  =  require("express")();
-const  AdAuth  =  require("./src");
+const  AdAuth  =  require("express-ad-basicauth");
 const port = 8080;
 
 AdAuth.initAd(

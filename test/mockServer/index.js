@@ -28,9 +28,14 @@ const errors = require("ldapjs/lib/errors");
 const connectionHandler = require("./connectionHandler");
 
 const pino = require("pino");
-const pretty = pino.pretty();
-pretty.pipe(process.stdout);
-let log = pino({ level: "info" }, pretty);
+let log = pino({
+  level: "info",
+  prettyPrint: {
+    levelFirst: true,
+    colorize: true,
+    translateTime: true,
+  },
+});
 
 let server;
 
@@ -87,34 +92,34 @@ function Server(options) {
   }
   this.server.log = options.log;
   this.server.ldap = {
-    config: options
+    config: options,
   };
-  this.server.on("close", function() {
+  this.server.on("close", function () {
     self.emit("close");
   });
-  this.server.on("error", function(err) {
+  this.server.on("error", function (err) {
     self.emit("error", err);
   });
 
   Object.defineProperties(this, {
     connections: {
-      get: function() {
+      get: function () {
         return this.server.connections;
-      }
+      },
     },
     maxConnections: {
-      get: function() {
+      get: function () {
         return this.server.maxConnections;
       },
-      set: function(val) {
+      set: function (val) {
         this.server.maxConnections = val;
-      }
+      },
     },
     name: {
-      value: "MockLDAPServer"
+      value: "MockLDAPServer",
     },
     url: {
-      get: function() {
+      get: function () {
         let str;
         if (!this.server.address().family) {
           str = "ldapi://";
@@ -130,8 +135,8 @@ function Server(options) {
         str += ":";
         str += self.port || 389;
         return str;
-      }
-    }
+      },
+    },
   });
 }
 util.inherits(Server, ldap.Server);
@@ -155,14 +160,14 @@ Server.prototype._getHandlerChain = function _getHandlerChain(req, res) {
     return {
       backend: this,
       handlers: [
-        function(req, res, next) {
+        function (req, res, next) {
           res.status = errors.LDAP_INVALID_CREDENTIALS;
           res.matchedDN = req.suffix ? req.suffix.toString() : "";
           res.errorMessage = "";
           res.end(res.status);
           return next();
-        }
-      ]
+        },
+      ],
     };
   }
   return ldap.Server.prototype._getHandlerChain.apply(this, arguments);
@@ -209,7 +214,7 @@ function mergeFunctionArgs(argv, start, end) {
 // We have to override _mount so that DN parsing will work with weird usernames.
 // We have simplified the upstream function to always return a FakeDN instance
 // instead of either a plain string or a DN instance.
-Server.prototype._mount = function(op, name, argv) {
+Server.prototype._mount = function (op, name, argv) {
   if (typeof name !== "string") {
     throw new TypeError("name (string) required");
   }
@@ -228,7 +233,7 @@ Server.prototype._mount = function(op, name, argv) {
   const route = this._getRoute(FakeDN.parse(name), backend);
 
   const chain = this._chain.slice();
-  argv.slice(index).forEach(function(a) {
+  argv.slice(index).forEach(function (a) {
     chain.push(a);
   });
   route["0x" + op.toString(16)] = mergeFunctionArgs(chain);
@@ -240,20 +245,20 @@ function initServer(cb) {
   require("./authentication")(server, settings);
   require("./search")(server, settings);
 
-  server.listen(1389, "127.0.0.1", function() {
+  server.listen(1389, "127.0.0.1", function () {
     console.log("server running: %s", server.url);
     cb(server);
   });
 }
 
-module.exports = function(cb) {
+module.exports = function (cb) {
   if (server) {
     return cb(server);
   }
 
   server = new Server({
     strictDN: false,
-    log: log
+    log: log,
   });
   initServer(cb);
 };

@@ -14,18 +14,18 @@ const init = (adConf, userGroup) => {
   group = userGroup;
 };
 
-const setNameFunc = func => {
+const setNameFunc = (func) => {
   editName = func;
 };
 
-const setPassFunc = func => {
+const setPassFunc = (func) => {
   editPass = func;
 };
 
 const adAuth = (user, pass, cb) => {
+  if (editName) user = editName(user);
+  if (editPass) pass = editPass(pass);
   try {
-    if (editName) user = editName(user);
-    if (editPass) pass = editPass(pass);
     config.username = user;
     config.password = pass;
     const ad = new ActiveDirectory(config);
@@ -43,7 +43,7 @@ const adAuth = (user, pass, cb) => {
             new Error(
               JSON.stringify({
                 originalError: err,
-                errorWhileProcessingError: error
+                errorWhileProcessingError: error,
               }),
               null
             )
@@ -57,7 +57,7 @@ const adAuth = (user, pass, cb) => {
         ad.isUserMemberOf(user, group, (err, isMember) => {
           if (err) return cb(err, null);
           return cb(!isMember ? new Error("Not allowed!") : null, {
-            user
+            user,
           });
         });
       } else {
