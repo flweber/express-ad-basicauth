@@ -23,7 +23,7 @@
     "ldapjs": "^2.1.1",
     "mocha": "^8.1.1",
     "pino": "^6.5.1",
-    "pino-pretty": "^4.1.0",
+    "pino-pretty": "^5.1.1",
     "prettier": "^2.0.5",
     "request": "^2.88.0",
     "terser-webpack-plugin": "^4.1.0",
